@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>91CLUB - WinGo Gaming Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #fff9e6, #ffe6cc);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* LEFT PANEL - GAME */
+        .left-panel {
+            background: linear-gradient(135deg, #ff6b6b, #ff8787);
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .back-btn {
+            font-size: 24px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .game-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: space-around;
+        }
+
+        .game-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.5);
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn.active {
+            background: rgba(255,255,255,0.4);
+            border-color: white;
+            transform: scale(1.1);
+        }
+
+        .period-display {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .period-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .period-id {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        .timer-display {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .timer-big {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 0 0 10px rgba(0,0,0,0.3);
+            font-family: 'Courier New', monospace;
+        }
+
+        .prediction-box {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .prediction-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .prediction-value {
+            font-size: 48px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0,0,0,0.3);
+            letter-spacing: 3px;
+        }
+
+        .result-row {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .result-number {
+            font-size: 32px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+        }
+
+        .result-number.red {
+            background: radial-gradient(circle, #ff4444, #cc0000);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .result-number.green {
+            background: radial-gradient(circle, #44ff44, #00cc00);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .result-type {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* RIGHT PANEL - HISTORY & CONTROLS */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #ffaa00;
+            padding-bottom: 8px;
+        }
+
+        .filter-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .filter-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        select {
+            padding: 10px;
+            border: 2px solid #ffaa00;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 10px;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-period {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .history-result {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .history-result.big {
+            color: #ff6b6b;
+        }
+
+        .history-result.small {
+            color: #4488ff;
+        }
+
+        .history-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .history-indicator.red {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+        }
+
+        .history-indicator.green {
+            background: linear-gradient(135deg, #44ff44, #00cc00);
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        }
+
+        /* BETTING PANEL */
+        .betting-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bet-section {
+            display: flex;
+            gap: 10px;
+        }
+
+        .bet-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .bet-btn.big {
+            background: linear-gradient(135deg, #ff9900, #ffaa00);
+            color: white;
+        }
+
+        .bet-btn.small {
+            background: linear-gradient(135deg, #4488ff, #3366ff);
+            color: white;
+        }
+
+        .bet-btn:active {
+            transform: scale(0.95);
+        }
+
+        .amount-input {
+            padding: 10px;
+            border: 2px solid #ffaa00;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #fff9e6, #ffe6cc);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #ffaa00;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            <div class="header-top">
+                <button class="back-btn">←</button>
+                <div class="logo">91CLUB</div>
+                <div style="width: 40px;"></div>
+            </div>
+
+            <div class="section-title">Choose Game</div>
+            <div class="game-selector">
+                <button class="game-btn" onclick="selectGame('30s')">WinGo 30s</button>
+                <button class="game-btn active" onclick="selectGame('1m')">WinGo 1m</button>
+                <button class="game-btn" onclick="selectGame('3m')">WinGo 3m</button>
+                <button class="game-btn" onclick="selectGame('5m')">WinGo 5m</button>
+            </div>
+
+            <div class="period-display">
+                <div class="period-label">PERIOD</div>
+                <div class="period-id" id="periodId">20260902100011344</div>
+            </div>
+
+            <div class="timer-display">
+                <div class="timer-big" id="timer">60s</div>
+            </div>
+
+            <div class="section-title">NEXT PREDICTION</div>
+            <div class="prediction-box">
+                <div class="prediction-label">Predicted Outcome</div>
+                <div class="prediction-value" id="predictionValue">SMALL</div>
+            </div>
+
+            <div class="section-title">Last 4 Results</div>
+            <div id="lastResults"></div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+            <!-- HISTORY CARD -->
+            <div class="card">
+                <div class="card-title">📊 Wingo 1M History</div>
+                <div class="filter-group">
+                    <div class="filter-box">
+                        <div class="filter-label">Game</div>
+                        <select onchange="updateHistory()">
+                            <option>WinGo</option>
+                        </select>
+                    </div>
+                    <div class="filter-box">
+                        <div class="filter-label">Result</div>
+                        <select onchange="updateHistory()">
+                            <option>Show Everything</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="history-list" id="historyList"></div>
+            </div>
+
+            <!-- BETTING PANEL -->
+            <div class="card">
+                <div class="card-title">💰 Place Bet</div>
+                <div class="betting-panel">
+                    <input type="number" class="amount-input" id="betAmount" placeholder="Enter bet amount" min="1" value="100">
+                    <div class="bet-section">
+                        <button class="bet-btn big" onclick="placeBet('BIG')">🎯 BIG</button>
+                        <button class="bet-btn small" onclick="placeBet('SMALL')">🎯 SMALL</button>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="stat-label">Win Rate</div>
+                            <div class="stat-value" id="winRate">85%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Balance</div>
+                            <div class="stat-value" id="balance">₹5000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT BETS -->
+            <div class="card">
+                <div class="card-title">📈 Recent Activity</div>
+                <div class="history-list" id="recentBets"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            currentGame: '1m',
+            currentPeriod: 20260902100011344,
+            currentNumber: null,
+            currentPrediction: 'SMALL',
+            balance: 5000,
+            winRate: 85,
+            history: [],
+            recentBets: [],
+            gameIntervals: {
+                '30s': 30000,
+                '1m': 60000,
+                '3m': 180000,
+                '5m': 300000
+            }
+        };
+
+        // Initialize game history
+        function initializeHistory() {
+            gameState.history = [
+                { period: 20260902100011344, number: 0, type: 'SMALL', color: 'red' },
+                { period: 20260901100011286, number: 9, type: 'BIG', color: 'green' },
+                { period: 20260901100011285, number: 6, type: 'BIG', color: 'red' },
+                { period: 20260901100011284, number: 5, type: 'BIG', color: 'green' },
+                { period: 20260901100011283, number: 3, type: 'SMALL', color: 'red' },
+                { period: 20260901100011282, number: 7, type: 'BIG', color: 'green' },
+                { period: 20260901100011281, number: 2, type: 'SMALL', color: 'red' },
+                { period: 20260901100011280, number: 8, type: 'BIG', color: 'green' },
+                { period: 20260901100011279, number: 4, type: 'SMALL', color: 'red' },
+                { period: 20260901100011278, number: 9, type: 'BIG', color: 'green' }
+            ];
+        }
+
+        // Prediction Algorithm
+        function calculatePrediction() {
+            if (gameState.history.length === 0) return 'SMALL';
+            
+            // Analyze last 5 results
+            const last5 = gameState.history.slice(0, 5);
+            const bigCount = last5.filter(h => h.type === 'BIG').length;
+            const smallCount = last5.filter(h => h.type === 'SMALL').length;
+            
+            // Simple pattern: if more BIG, predict SMALL (opposite trend)
+            if (bigCount > smallCount) {
+                return 'SMALL';
+            } else if (smallCount > bigCount) {
+                return 'BIG';
+            } else {
+                // Alternate if equal
+                const lastType = last5[0].type;
+                return lastType === 'BIG' ? 'SMALL' : 'BIG';
+            }
+        }
+
+        // Generate new result
+        function generateNewResult() {
+            const randomNumber = Math.floor(Math.random() * 10);
+            const resultType = randomNumber >= 5 ? 'BIG' : 'SMALL';
+            const color = randomNumber % 2 === 0 ? 'green' : 'red';
+            
+            const newResult = {
+                period: ++gameState.currentPeriod,
+                number: randomNumber,
+                type: resultType,
+                color: color
+            };
+            
+            gameState.history.unshift(newResult);
+            gameState.currentNumber = randomNumber;
+            gameState.currentPrediction = calculatePrediction();
+            
+            updateUI();
+        }
+
+        // Timer Logic
+        let currentTime = 60;
+        function startTimer() {
+            currentTime = gameState.gameIntervals[gameState.currentGame] / 1000;
+            const timerInterval = setInterval(() => {
+                currentTime--;
+                if (currentTime < 0) {
+                    generateNewResult();
+                    currentTime = gameState.gameIntervals[gameState.currentGame] / 1000;
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            let display = '';
+            if (currentTime < 60) {
+                display = currentTime + 's';
+            } else {
+                const mins = Math.floor(currentTime / 60);
+                const secs = currentTime % 60;
+                display = mins + 'm ' + secs + 's';
+            }
+            document.getElementById('timer').textContent = display;
+        }
+
+        // Select Game
+        function selectGame(game) {
+            gameState.currentGame = game;
+            document.querySelectorAll('.game-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            currentTime = 60;
+            updateUI();
+        }
+
+        // Place Bet
+        function placeBet(choice) {
+            const amount = parseInt(document.getElementById('betAmount').value);
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            if (amount > gameState.balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+
+            const betResult = {
+                period: gameState.currentPeriod,
+                choice: choice,
+                amount: amount,
+                number: gameState.currentNumber,
+                result: gameState.history[0]?.type,
+                timestamp: new Date().toLocaleTimeString()
+            };
+
+            const isWin = choice === gameState.history[0]?.type;
+            if (isWin) {
+                gameState.balance += amount;
+                betResult.status = 'WON';
+            } else {
+                gameState.balance -= amount;
+                betResult.status = 'LOST';
+            }
+
+            gameState.recentBets.unshift(betResult);
+            if (gameState.recentBets.length > 10) gameState.recentBets.pop();
+
+            updateUI();
+            alert(`Bet ${betResult.status}! ${isWin ? '+' : '-'}₹${amount}`);
+        }
+
+        // Update History Display
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = gameState.history.slice(0, 10).map(h => `
+                <div class="history-item">
+                    <div class="history-period">${h.period}</div>
+                    <div class="history-result ${h.type.toLowerCase()}">${h.type} ${h.number}</div>
+                    <div><span class="history-indicator ${h.color}"></span></div>
+                </div>
+            `).join('');
+        }
+
+        // Update Last Results Display
+        function updateLastResults() {
+            const container = document.getElementById('lastResults');
+            container.innerHTML = gameState.history.slice(0, 4).map(h => `
+                <div class="result-row">
+                    <div class="result-number ${h.color}">${h.number}</div>
+                    <div class="result-type">${h.type}</div>
+                    <div style="font-size: 11px; opacity: 0.8;">${h.period}</div>
+                </div>
+            `).join('');
+        }
+
+        // Update Recent Bets
+        function updateRecentBets() {
+            const container = document.getElementById('recentBets');
+            if (gameState.recentBets.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">No bets yet</div>';
+                return;
+            }
+            container.innerHTML = gameState.recentBets.slice(0, 5).map(b => `
+                <div class="history-item">
+                    <div>
+                        <strong>${b.choice}</strong><br>
+                        <small style="color: #888;">₹${b.amount}</small>
+                    </div>
+                    <div style="font-weight: bold; color: ${b.status === 'WON' ? '#00cc00' : '#ff4444'};">${b.status}</div>
+                    <div style="font-size: 11px; color: #888;">${b.timestamp}</div>
+                </div>
+            `).join('');
+        }
+
+        // Update UI
+        function updateUI() {
+            document.getElementById('periodId').textContent = gameState.currentPeriod;
+            document.getElementById('predictionValue').textContent = gameState.currentPrediction;
+            document.getElementById('balance').textContent = '₹' + gameState.balance.toLocaleString();
+            document.getElementById('winRate').textContent = gameState.winRate + '%';
+            updateHistory();
+            updateLastResults();
+            updateRecentBets();
+        }
+
+        // Initialize on load
+        window.addEventListener('load', function() {
+            initializeHistory();
+            gameState.currentNumber = gameState.history[0].number;
+            gameState.currentPrediction = calculatePrediction();
+            updateUI();
+            startTimer();
+        });
+    </script>
+</body>
+</html>
